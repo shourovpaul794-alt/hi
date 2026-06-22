@@ -1,0 +1,331 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Invitation</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+overflow:hidden;
+font-family:Georgia,serif;
+background:#000;
+}
+
+/* =========================
+   MOVING FLOWER BACKGROUND
+========================= */
+
+.flower-bg{
+position:fixed;
+top:0;
+left:0;
+width:120%;
+height:120%;
+background:url('flowers.jpg') center center/cover no-repeat;
+animation:moveFlowers 30s ease-in-out infinite alternate;
+z-index:-2;
+}
+
+.flower-bg::after{
+content:'';
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.15);
+}
+
+@keyframes moveFlowers{
+0%{
+transform:translate(-3%,-2%) scale(1.05);
+}
+100%{
+transform:translate(3%,2%) scale(1.15);
+}
+}
+
+/* =========================
+   PAGES
+========================= */
+
+.page{
+position:absolute;
+width:100%;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+transition:1s;
+}
+
+.hidden{
+opacity:0;
+pointer-events:none;
+transform:scale(.95);
+}
+
+/* =========================
+   PAGE 1
+========================= */
+
+.page1-content{
+text-align:center;
+color:#fff;
+}
+
+.closed-envelope{
+width:320px;
+max-width:80vw;
+cursor:pointer;
+transition:.5s;
+filter:drop-shadow(0 10px 25px rgba(0,0,0,.35));
+}
+
+.closed-envelope:hover{
+transform:scale(1.03);
+}
+
+.invite-card-front{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:220px;
+background:#f7f1ea;
+padding:40px 20px;
+box-shadow:0 8px 20px rgba(0,0,0,.2);
+pointer-events:none;
+}
+
+.invite-card-front h1{
+font-size:22px;
+line-height:1.8;
+color:#111;
+}
+
+.invite-card-front p{
+font-size:18px;
+margin-top:20px;
+color:#333;
+}
+
+/* =========================
+   PAGE 2
+========================= */
+
+.page2{
+opacity:0;
+pointer-events:none;
+}
+
+.page2.show{
+opacity:1;
+pointer-events:auto;
+}
+
+.envelope-wrapper{
+position:relative;
+width:340px;
+height:340px;
+}
+
+/* envelope body */
+
+.envelope{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+width:320px;
+height:220px;
+background:#f3ede4;
+border-radius:4px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+overflow:hidden;
+}
+
+/* flap */
+
+.flap{
+position:absolute;
+top:-1px;
+left:0;
+width:100%;
+height:120px;
+background:#ece5da;
+clip-path:polygon(0 0,100% 0,50% 100%);
+transform-origin:top center;
+transition:1.2s ease;
+z-index:5;
+}
+
+/* card */
+
+.real-card{
+position:absolute;
+bottom:80px;
+left:50%;
+transform:translateX(-50%) translateY(140px) rotate(-8deg);
+width:260px;
+z-index:2;
+opacity:0;
+transition:2s ease;
+filter:drop-shadow(0 15px 20px rgba(0,0,0,.25));
+}
+
+.animate .flap{
+transform:rotateX(180deg);
+}
+
+.animate .real-card{
+transform:translateX(-50%) translateY(-90px) rotate(-8deg);
+opacity:1;
+}
+
+/* text */
+
+.tap-info{
+margin-top:25px;
+text-align:center;
+color:white;
+font-size:18px;
+letter-spacing:1px;
+animation:blink 1.5s infinite;
+}
+
+@keyframes blink{
+50%{
+opacity:.4;
+}
+}
+
+/* mobile */
+
+@media(max-width:500px){
+
+.closed-envelope{
+width:280px;
+}
+
+.invite-card-front{
+width:190px;
+}
+
+.envelope-wrapper{
+transform:scale(.9);
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="flower-bg"></div>
+
+<!-- =========================
+     PAGE 1
+========================= -->
+
+<div class="page page1" id="page1">
+
+<div class="page1-content">
+
+<div style="position:relative;display:inline-block;">
+
+<img
+src="envelope.png"
+class="closed-envelope"
+id="openBtn"
+alt="Envelope">
+
+<div class="invite-card-front">
+
+<h1>
+You've been<br>
+Invited
+</h1>
+
+<p>
+(Tap to open)
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+     PAGE 2
+========================= -->
+
+<div class="page page2" id="page2">
+
+<div>
+
+<div class="envelope-wrapper" id="animationBox">
+
+<!-- invitation card -->
+
+<img
+src="card.png"
+class="real-card"
+alt="Invitation Card">
+
+<!-- envelope -->
+
+<div class="envelope">
+
+<div class="flap"></div>
+
+</div>
+
+</div>
+
+<div class="tap-info">
+Best Wishes ✨
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const page1 = document.getElementById("page1");
+const page2 = document.getElementById("page2");
+const openBtn = document.getElementById("openBtn");
+const animationBox = document.getElementById("animationBox");
+
+openBtn.addEventListener("click",()=>{
+
+page1.classList.add("hidden");
+
+setTimeout(()=>{
+
+page2.classList.add("show");
+
+setTimeout(()=>{
+
+animationBox.classList.add("animate");
+
+},300);
+
+},800);
+
+});
+
+</script>
+
+</body>
+</html>
+```
